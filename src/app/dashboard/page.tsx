@@ -129,15 +129,16 @@ export default function Dashboard() {
       }}
     >
       <Box mt="2.5">
+        <Text
+          color={useColorModeValue("#3B3B45", "gray.900")}
+          fontWeight="semibold"
+          fontSize="md"
+          display={taskList?.length ? "block" : "none"}
+        >
+          Your Tasks
+        </Text>
         {taskList?.length ? (
           <>
-            <Text
-              color={useColorModeValue("#3B3B45", "gray.900")}
-              fontWeight="semibold"
-              fontSize="md"
-            >
-              Your Tasks
-            </Text>
             {taskList?.map(({ title, description, status }, i) => (
               <Box key={`task-${i}`}>
                 <TaskCard
