@@ -57,8 +57,8 @@ export default function Dashboard() {
   const [user, setUser] = React.useState<any>();
   const client = new Client();
   client
-    .setEndpoint(`https://cloud.appwrite.io/v1`)
-    .setProject(`65c0ff8438895599410f`);
+    .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
+    .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
 
   const databases = new Databases(client);
   React.useEffect(() => {
