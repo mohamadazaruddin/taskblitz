@@ -1,13 +1,15 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { colors } from "./foundations/colors";
-
 import styles from "./styles";
+import Button from "./foundations/components/Button.theme";
+import Input from "./foundations/components/Input.theme";
 
 const config: ThemeConfig = {
-  initialColorMode: "light",
+  initialColorMode: "dark",
+  useSystemColorMode: false,
 };
 
-const theme = extendTheme({
+export const theme = extendTheme({
   config,
   fonts: {
     heading: "Gotham, sans-serif",
@@ -42,5 +44,8 @@ const theme = extendTheme({
     borderStart8: "8px",
   },
   styles,
-  components: {},
+  components: {
+    Button,
+    Input,
+  },
 });
