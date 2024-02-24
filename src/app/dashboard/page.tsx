@@ -56,12 +56,13 @@ export default function Dashboard() {
   const [descriptionError, setDescriptionError] = React.useState(false);
   const [user, setUser] = React.useState<any>();
   const client = new Client();
-  client
-    .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
-    .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
 
-  const databases = new Databases(client);
   React.useEffect(() => {
+    client
+      .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
+      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
+    const databases = new Databases(client);
+
     const userDataString = localStorage.getItem("user");
     if (userDataString) {
       const userData = JSON.parse(userDataString);
@@ -91,12 +92,15 @@ export default function Dashboard() {
   }, [createDocumentResponse]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
+    client
+      .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
+      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
+    const databases = new Databases(client);
     e.preventDefault();
     if (title.length < 3) setTitleError(true);
     if (description.length < 4) setDescriptionError(true);
     if (title.length && description.length && status.length && user) {
       console.log(user.userName);
-
       const promise = databases.createDocument(
         "65d2608933aec898f3e4",
         "65d260a60a5d813b1ab7",
