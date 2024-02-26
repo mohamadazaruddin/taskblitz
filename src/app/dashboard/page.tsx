@@ -86,7 +86,7 @@ export default function Dashboard() {
           console.log(
             error,
             process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
-            NEXT_PUBLIC_APPWRITE_PROJECT_ID,
+            process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
             "error"
           );
         }
