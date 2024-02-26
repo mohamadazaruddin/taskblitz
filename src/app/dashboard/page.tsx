@@ -83,7 +83,12 @@ export default function Dashboard() {
           console.log(data, "ddd");
         },
         function (error) {
-          console.log(error, "error");
+          console.log(
+            error,
+            process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
+            NEXT_PUBLIC_APPWRITE_PROJECT_ID,
+            "error"
+          );
         }
       );
     } else {
