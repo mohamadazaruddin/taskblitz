@@ -60,7 +60,7 @@ export default function Dashboard() {
   React.useEffect(() => {
     client
       .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT?.toString()}`)
-      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID.toString()}`);
+      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID?.toString()}`);
     const databases = new Databases(client);
 
     const userDataString = localStorage.getItem("user");
