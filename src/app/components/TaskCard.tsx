@@ -64,8 +64,14 @@ export default function TaskCard({
             {title}
           </Heading>
 
-          <Text fontSize="sm" mt={1} fontWeight="normal" color="#797C86">
-            {description}
+          <Text
+            fontSize="sm"
+            mt={1}
+            mb={2.5}
+            fontWeight="normal"
+            color="#797C86"
+          >
+            {description}{" "}
           </Text>
           {statusColor(status)}
         </Box>
@@ -73,25 +79,12 @@ export default function TaskCard({
           <DeleteIcon
             onClick={() => handleDelete(taskId)}
             mt={2}
+            cursor="pointer"
             mr={2}
             h="4"
             w="4"
-            color="#BF1E2E"
+            color="#ff4457"
           />
-          {/* <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<OptionIcon h={5} w={5} />}
-              bg="none"
-              p={0}
-              _focus={{ bg: "none" }}
-            />
-            <MenuList>
-              <MenuItem>Edit</MenuItem>
-              <MenuItem>Delete</MenuItem>
-            </MenuList>
-          </Menu> */}
         </Box>
       </Flex>
     </Card>

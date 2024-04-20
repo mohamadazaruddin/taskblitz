@@ -171,6 +171,7 @@ export default function Dashboard() {
       }
     );
   };
+  const titleColor = useColorModeValue("#000", "#fff");
 
   return (
     <GradientWrapper
@@ -209,64 +210,82 @@ export default function Dashboard() {
             <ErrorMessage mt="10" />
           )}
         </Box>
-        <Flex
-          py="5"
-          justify="space-between"
-          display={{ base: "none", md: "flex" }}
-        >
-          <Box w="33%">
-            {statusColor("Pending", "md")}
-            {taskList
-              ?.filter((item) => item.status === "Pending")
-              .map((item, i) => (
-                <Box key={`task-${i}`}>
-                  <TaskCard
-                    handleDelete={handleDelete}
-                    title={item.title}
-                    description={item.description}
-                    status={item.status}
-                    mt={i === 0 ? "1" : "2"}
-                    taskId={item.$id}
-                  />
-                </Box>
-              ))}
-          </Box>
-          <Box w="33%">
-            {statusColor("In progress", "md")}
 
-            {taskList
-              ?.filter((item) => item.status === "In progress")
-              .map((item, i) => (
-                <Box key={`task-${i}`}>
-                  <TaskCard
-                    handleDelete={handleDelete}
-                    title={item.title}
-                    description={item.description}
-                    status={item.status}
-                    taskId={item.$id}
-                    mt={i === 0 ? "1" : "2"}
-                  />
-                </Box>
-              ))}
-          </Box>
-          <Box w="33%">
-            {statusColor("Done", "md")}
-            {taskList
-              ?.filter((item) => item.status === "Done")
-              .map((item, i) => (
-                <Box key={`task-${i}`}>
-                  <TaskCard
-                    handleDelete={handleDelete}
-                    title={item.title}
-                    description={item.description}
-                    status={item.status}
-                    taskId={item.$id}
-                    mt={i === 0 ? "1" : "2"}
-                  />
-                </Box>
-              ))}
-          </Box>
-        </Flex>
+        {taskList?.length ? (
+          <Flex
+            py="5"
+            gap="10"
+            justify="space-between"
+            display={{ base: "none", md: "flex" }}
+          >
+            <Box w="33%">
+              <Flex fontSize="md" color={titleColor} align="center">
+                {statusColor("Pending", "md")} Pending
+              </Flex>
+              {taskList
+                ?.filter((item) => item.status === "Pending")
+                .map((item, i) => (
+                  <Box key={`task-${i}`}>
+                    <TaskCard
+                      handleDelete={handleDelete}
+                      title={item.title}
+                      description={item.description}
+                      status={item.status}
+                      mt={i === 0 ? "1" : "2"}
+                      taskId={item.$id}
+                    />
+                  </Box>
+                ))}
+            </Box>
+            <Box w="33%">
+              <Flex fontSize="md" color={titleColor} align="center">
+                {statusColor("In-progress", "md")} In Progress
+              </Flex>
+
+              {taskList
+                ?.filter((item) => item.status === "In progress")
+                .map((item, i) => (
+                  <Box key={`task-${i}`}>
+                    <TaskCard
+                      handleDelete={handleDelete}
+                      title={item.title}
+                      description={item.description}
+                      status={item.status}
+                      taskId={item.$id}
+                      mt={i === 0 ? "1" : "2"}
+                    />
+                  </Box>
+                ))}
+            </Box>
+            <Box w="33%">
+              <Flex fontSize="md" color={titleColor} align="center">
+                {statusColor("Done", "md")} Done
+              </Flex>
+              {taskList
+                ?.filter((item) => item.status === "Done")
+                .map((item, i) => (
+                  <Box key={`task-${i}`}>
+                    <TaskCard
+                      handleDelete={handleDelete}
+                      title={item.title}
+                      description={item.description}
+                      status={item.status}
+                      taskId={item.$id}
+                      mt={i === 0 ? "1" : "2"}
+                    />
+                  </Box>
+                ))}
+            </Box>
+          </Flex>
+        ) : (
+          <ErrorMessage
+            display={{ base: "none", md: "block" }}
+            h="500px"
+            m="auto"
+            w="380px"
+            mt="150px"
+          />
+        )}
       </Box>
       <IconButton
         rounded="full"

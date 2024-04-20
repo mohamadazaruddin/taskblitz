@@ -20,10 +20,9 @@ export default function statusColor(status: string, size?: string) {
     <Flex
       alignItems="center"
       fontSize={size ? "md" : "xs"}
-      mt={2.5}
       gap={1.5}
       fontWeight="normal"
-      color={size ? useColorModeValue("#000", "#fff") : "#797C86"}
+      color={"#797C86"}
     >
       <CircleIcon
         boxSize={size ? 5 : 3.5}
@@ -36,7 +35,7 @@ export default function statusColor(status: string, size?: string) {
         }
       />
 
-      <Box as="span">{status}</Box>
+      <Box as="span">{size ? "" : status}</Box>
     </Flex>
   );
 }
