@@ -14,6 +14,7 @@ import {
   HStack,
   PinInput,
   PinInputField,
+  useToast,
   Flex,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
@@ -28,11 +29,20 @@ export default function Login() {
   const [pin, setPin] = useState("");
   const { response, setResponse } = useCurrentUser();
   const { push } = useRouter();
+  const toast = useToast();
+
   const handleSubmit = () => {
     if (username.length < 3) setUsernameError(true);
     if (pin.length < 4) setPinError(true);
     if (!pinError && !usernameError && username.length && pin.length) {
       setResponse({ userName: username, pin: pin });
+      toast({
+        title: `Logged in successfully`,
+        status: "success",
+        duration: 5000,
+        variant: "left-accent",
+        isClosable: true,
+      });
       push("/dashboard");
       localStorage.setItem(
         "user",
