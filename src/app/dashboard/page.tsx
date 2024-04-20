@@ -1,9 +1,10 @@
 "use client";
-import { Client, Databases, ID, Query } from "appwrite";
+import { Databases, ID, Query } from "appwrite";
 // import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -22,10 +23,14 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import React, { use } from "react";
 import { AddIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/navigation";
+import statusColor from "@/utils/statusColor";
+import client from "../../../lib/appwrite_client";
 
 const GradientWrapper = dynamic(() => import("@/components/GradientWrapper"));
 const TaskCard = dynamic(() => import("@/components/TaskCard"));
@@ -55,14 +60,11 @@ export default function Dashboard() {
   const [titleError, setTitleError] = React.useState(false);
   const [descriptionError, setDescriptionError] = React.useState(false);
   const [user, setUser] = React.useState<any>();
-  const client = new Client();
+  const toast = useToast();
 
+  const { push } = useRouter();
   React.useEffect(() => {
-    client
-      .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
-      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
     const databases = new Databases(client);
-
     const userDataString = localStorage.getItem("user");
     if (userDataString) {
       const userData = JSON.parse(userDataString);
@@ -70,42 +72,38 @@ export default function Dashboard() {
       let promise = databases.listDocuments(
         "65d2608933aec898f3e4",
         "65d260a60a5d813b1ab7",
-        []
+        [Query.equal("pin", [userData?.pin])]
       );
+
       promise.then(
         function (response) {
           const data = response.documents.filter(
             (item) =>
               item.username === userData.userName && item.pin === userData.pin
           );
-
           setTaskList(data);
-          console.log(data, "ddd");
         },
         function (error) {
-          console.log(
-            error,
-            process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
-            process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID,
-            "error"
-          );
+          toast({
+            title: `${error}`,
+            status: "error",
+            duration: 5000,
+            variant: "left-accent",
+            isClosable: true,
+          });
         }
       );
     } else {
-      alert("user not found");
+      push("/login");
     }
   }, [createDocumentResponse]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
-    client
-      .setEndpoint(`${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}`)
-      .setProject(`${process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID}`);
     const databases = new Databases(client);
     e.preventDefault();
     if (title.length < 3) setTitleError(true);
     if (description.length < 4) setDescriptionError(true);
     if (title.length && description.length && status.length && user) {
-      console.log(user.userName);
       const promise = databases.createDocument(
         "65d2608933aec898f3e4",
         "65d260a60a5d813b1ab7",
@@ -122,13 +120,58 @@ export default function Dashboard() {
         function (response) {
           onClose();
           setCreateDocumentResponse(response); // Trigger useEffect again
+          toast({
+            title: "Task created successfully",
+            status: "success",
+            variant: "left-accent",
+            duration: 5000,
+            isClosable: true,
+          });
         },
         function (error) {
-          console.log(error);
+          toast({
+            title: `${error}`,
+            status: "error",
+            duration: 5000,
+            variant: "left-accent",
+            isClosable: true,
+          });
         }
       );
     }
   };
+
+  const handleDelete = (id: string) => {
+    const databases = new Databases(client);
+    const promise = databases.deleteDocument(
+      "65d2608933aec898f3e4",
+      "65d260a60a5d813b1ab7",
+      id
+    );
+    promise.then(
+      function (response) {
+        onClose();
+        setCreateDocumentResponse(response); // Trigger useEffect again
+        toast({
+          title: "Task Deleted successfully",
+          status: "success",
+          variant: "left-accent",
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      function (error) {
+        toast({
+          title: `${error}`,
+          status: "error",
+          duration: 5000,
+          variant: "left-accent",
+          isClosable: true,
+        });
+      }
+    );
+  };
+
   return (
     <GradientWrapper
       colorSwitch={true}
@@ -141,39 +184,101 @@ export default function Dashboard() {
         <Text
           color={useColorModeValue("#3B3B45", "gray.900")}
           fontWeight="semibold"
-          fontSize="md"
+          fontSize={{ base: "md", md: "24px" }}
           display={taskList?.length ? "block" : "none"}
         >
           Your Tasks
         </Text>
-        {taskList?.length ? (
-          <>
-            {taskList?.map(({ title, description, status }, i) => (
-              <Box key={`task-${i}`}>
-                <TaskCard
-                  title={title}
-                  description={description}
-                  status={status}
-                  mt={i === 0 ? "1" : "2"}
-                />
-              </Box>
-            ))}
-          </>
-        ) : (
-          <ErrorMessage mt="10" />
-        )}
+        <Box display={{ base: "block", md: "none" }}>
+          {taskList?.length ? (
+            <>
+              {taskList?.map((item, i) => (
+                <Box key={`task-${i}`}>
+                  <TaskCard
+                    handleDelete={handleDelete}
+                    title={item.title}
+                    description={item.description}
+                    status={item.status}
+                    taskId={item.$id}
+                    mt={i === 0 ? "1" : "2"}
+                  />
+                </Box>
+              ))}
+            </>
+          ) : (
+            <ErrorMessage mt="10" />
+          )}
+        </Box>
+        <Flex
+          py="5"
+          justify="space-between"
+          display={{ base: "none", md: "flex" }}
+        >
+          <Box w="33%">
+            {statusColor("Pending", "md")}
+            {taskList
+              ?.filter((item) => item.status === "Pending")
+              .map((item, i) => (
+                <Box key={`task-${i}`}>
+                  <TaskCard
+                    handleDelete={handleDelete}
+                    title={item.title}
+                    description={item.description}
+                    status={item.status}
+                    mt={i === 0 ? "1" : "2"}
+                    taskId={item.$id}
+                  />
+                </Box>
+              ))}
+          </Box>
+          <Box w="33%">
+            {statusColor("In progress", "md")}
+
+            {taskList
+              ?.filter((item) => item.status === "In progress")
+              .map((item, i) => (
+                <Box key={`task-${i}`}>
+                  <TaskCard
+                    handleDelete={handleDelete}
+                    title={item.title}
+                    description={item.description}
+                    status={item.status}
+                    taskId={item.$id}
+                    mt={i === 0 ? "1" : "2"}
+                  />
+                </Box>
+              ))}
+          </Box>
+          <Box w="33%">
+            {statusColor("Done", "md")}
+            {taskList
+              ?.filter((item) => item.status === "Done")
+              .map((item, i) => (
+                <Box key={`task-${i}`}>
+                  <TaskCard
+                    handleDelete={handleDelete}
+                    title={item.title}
+                    description={item.description}
+                    status={item.status}
+                    taskId={item.$id}
+                    mt={i === 0 ? "1" : "2"}
+                  />
+                </Box>
+              ))}
+          </Box>
+        </Flex>
       </Box>
       <IconButton
         rounded="full"
         pos="absolute"
-        bottom={10}
+        bottom={{ base: 10, md: 20 }}
         h="14"
         w="14"
         onClick={onOpen}
         _focus={{
           border: "none",
         }}
-        right={5}
+        right={{ base: 5, md: 20 }}
         aria-label="add"
         icon={<AddIcon h={5} w={5} />}
       />

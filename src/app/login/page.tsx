@@ -14,6 +14,7 @@ import {
   HStack,
   PinInput,
   PinInputField,
+  Flex,
 } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -47,95 +48,125 @@ export default function Login() {
         pos: "relative",
       }}
     >
-      <Box textAlign="center" mt="5">
-        <Heading
-          fontWeight="semibold"
-          fontSize="22px"
-          color={useColorModeValue("black.600", "contrast.200")}
+      <Box mt={{ base: "none", md: "150px" }}>
+        <Box textAlign="center" mt="5">
+          <Heading
+            fontWeight="semibold"
+            fontSize={{ base: "22px", md: "48px" }}
+            color={useColorModeValue("black.600", "contrast.200")}
+          >
+            Welcome
+          </Heading>
+          <Text
+            mt={1}
+            fontWeight="semibold"
+            fontSize={{ base: "sm", md: "lg" }}
+            color="gray.400"
+          >
+            Lets help you in completing your tasks
+          </Text>
+        </Box>
+        <Box
+          h="180px"
+          m="auto"
+          mt="10"
+          w="180px"
+          bgImage={useColorModeValue(
+            "/images/login-bg-light.png",
+            "/images/login-bg-dark.png"
+          )}
+          display={{
+            base: "block",
+            md: "none",
+          }}
+          bgSize="cover"
+          bgRepeat="no-repeat"
+        ></Box>
+        <Box
+          mt={{ base: "8", md: "10", lg: "10" }}
+          w={{ base: "full", md: "450px" }}
+          m="auto"
         >
-          Welcome !!
-        </Heading>
-        <Text mt={1} fontWeight="semibold" fontSize="sm" color="gray.400">
-          Lets help you in completing your tasks
-        </Text>
-      </Box>
-      <Box
-        h="180px"
-        m="auto"
-        mt="10"
-        w="180px"
-        bgImage={useColorModeValue(
-          "/images/login-bg-light.png",
-          "/images/login-bg-dark.png"
-        )}
-        bgSize="cover"
-        bgRepeat="no-repeat"
-      ></Box>
-      <Box mt="8">
-        <FormControl isInvalid={usernameError}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="semibold"
-            color={useColorModeValue("black.500", "contrast.200")}
-          >
-            Enter Username
-          </FormLabel>
-          <Input
-            type="text"
-            onChange={(e) => {
-              setUsername(e.target.value);
-              if (e.target.value.length) setUsernameError(false);
-              else setUsernameError(true);
-            }}
-            bg={useColorModeValue("contrast.200", "black.500")}
-            borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
-          />
-
-          <FormErrorMessage>
-            Username should be greater than 3 letters
-          </FormErrorMessage>
-        </FormControl>
-        <FormControl mt="3" isInvalid={pinError}>
-          <FormLabel
-            fontSize="sm"
-            fontWeight="semibold"
-            color={useColorModeValue("black.500", "contrast.200")}
-          >
-            Enter Pin
-          </FormLabel>
-          <HStack w="full">
-            <PinInput
-              isInvalid={pinError}
-              onChange={(e) => {
-                setPin(e);
-                if (e.length) setPinError(false);
-                else setPinError(true);
-              }}
+          <FormControl isInvalid={usernameError}>
+            <FormLabel
+              fontSize="sm"
+              fontWeight="semibold"
+              color={useColorModeValue("black.500", "contrast.200")}
             >
-              <PinInputField
-                w="25%"
-                borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
-                bg={useColorModeValue("contrast.200", "black.500")}
-              />
-              <PinInputField
-                w="25%"
-                borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
-                bg={useColorModeValue("contrast.200", "black.500")}
-              />
-              <PinInputField
-                w="25%"
-                borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
-                bg={useColorModeValue("contrast.200", "black.500")}
-              />
-              <PinInputField
-                w="25%"
-                borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
-                bg={useColorModeValue("contrast.200", "black.500")}
-              />
-            </PinInput>
-          </HStack>
-          <FormErrorMessage>Please enter Pin</FormErrorMessage>
-        </FormControl>
+              Enter Username
+            </FormLabel>
+            <Input
+              type="text"
+              onChange={(e) => {
+                setUsername(e.target.value);
+                if (e.target.value.length) setUsernameError(false);
+                else setUsernameError(true);
+              }}
+              bg={useColorModeValue("contrast.200", "black.500")}
+              borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
+            />
+
+            <FormErrorMessage>
+              Username should be greater than 3 letters
+            </FormErrorMessage>
+          </FormControl>
+          <FormControl mt="3" isInvalid={pinError}>
+            <FormLabel
+              fontSize="sm"
+              fontWeight="semibold"
+              color={useColorModeValue("black.500", "contrast.200")}
+            >
+              Enter Pin
+            </FormLabel>
+            <HStack w="full">
+              <PinInput
+                isInvalid={pinError}
+                onChange={(e) => {
+                  setPin(e);
+                  if (e.length) setPinError(false);
+                  else setPinError(true);
+                }}
+              >
+                <PinInputField
+                  w="25%"
+                  borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
+                  bg={useColorModeValue("contrast.200", "black.500")}
+                />
+                <PinInputField
+                  w="25%"
+                  borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
+                  bg={useColorModeValue("contrast.200", "black.500")}
+                />
+                <PinInputField
+                  w="25%"
+                  borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
+                  bg={useColorModeValue("contrast.200", "black.500")}
+                />
+                <PinInputField
+                  w="25%"
+                  borderColor={useColorModeValue("#BABAFF", "#2F2F37")}
+                  bg={useColorModeValue("contrast.200", "black.500")}
+                />
+              </PinInput>
+            </HStack>
+            <FormErrorMessage>Please enter Pin</FormErrorMessage>
+          </FormControl>
+          <Flex align="center" justify="center">
+            <Button
+              variant="solid"
+              colorScheme="primary"
+              _focus={{
+                border: "none",
+              }}
+              mt="16"
+              px={20}
+              onClick={handleSubmit}
+              display={{ base: "none", md: "block" }}
+            >
+              Get Started
+            </Button>
+          </Flex>
+        </Box>
       </Box>
       <Button
         variant="solid"
@@ -148,6 +179,7 @@ export default function Login() {
         }}
         onClick={handleSubmit}
         right={5}
+        display={{ base: "block", md: "none" }}
       >
         Login
       </Button>

@@ -28,12 +28,12 @@ export default function GradientWrapper(
   const { children, colorSwitch, wrapperProps, sideBar, switchProps, ...rest } =
     props;
   return (
-    <Box bg="gray.100" h="full" w="full" {...rest}>
+    <Box bg="gray.100" h="full" w="full" overflowY="auto" {...rest}>
       <Box
         h="full"
         w="full"
         py={8}
-        px={5}
+        px={{ base: 5, md: 20 }}
         bg={useColorModeValue(
           "linear-gradient(166deg, #5251CC -7.84%, #FFF 68.35%)",
           "linear-gradient(345deg, #000 0.39%, rgba(2, 2, 10, 0.64) 137.26%, #000 137.26%)"
