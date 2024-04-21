@@ -289,7 +289,7 @@ export default function Dashboard() {
       </Box>
       <IconButton
         rounded="full"
-        pos="absolute"
+        pos="fixed"
         bottom={{ base: 10, md: 20 }}
         h="14"
         w="14"

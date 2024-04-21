@@ -21,10 +21,10 @@ const styles = {
         height: "6px",
       },
       "*::-webkit-scrollbar-track": {
-        background: "#F8F9FE",
+        background: "transparent",
       },
       "::-webkit-scrollbar-thumb": {
-        background: "#240090",
+        background: "transparent",
       },
       "::-webkit-scrollbar-corner": {
         background: "transparent",

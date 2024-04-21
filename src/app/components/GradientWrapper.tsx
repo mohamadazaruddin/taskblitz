@@ -33,6 +33,7 @@ export default function GradientWrapper(
         h="full"
         w="full"
         py={8}
+        overflowY="auto"
         px={{ base: 5, md: 20 }}
         bg={useColorModeValue(
           "linear-gradient(166deg, #5251CC -7.84%, #FFF 68.35%)",
